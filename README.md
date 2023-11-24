@@ -1,5 +1,5 @@
 # Gizmos Framework
-Gizmos framework for [Rust](https://store.steampowered.com/app/252490/Rust/) using the [Oxide/uMod](https://umod.org) extension platforms allowing you to log in the console using colors.
+Gizmos framework for [Rust](https://store.steampowered.com/app/252490/Rust/) using the [Oxide/uMod](https://umod.org) extension platforms exposing debug functions for developers.
 
 ## Getting Started
 1. Grab the Oxide.Ext.GizmosExt.dll from latest release
