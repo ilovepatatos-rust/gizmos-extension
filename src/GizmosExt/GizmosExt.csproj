@@ -1,14 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
-        <ImplicitUsings>disable</ImplicitUsings>
+        <TargetFramework>net48</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
         <AssemblyName>Oxide.Ext.GizmosExt</AssemblyName>
         <RootNamespace>Oxide.Ext.GizmosExt</RootNamespace>
 
         <!-- removes the .pdb file from the output folder -->
         <DebugType>embedded</DebugType>
+        <LangVersion>11</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>

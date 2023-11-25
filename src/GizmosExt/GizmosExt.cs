@@ -1,8 +1,10 @@
-﻿using Oxide.Core;
+﻿using JetBrains.Annotations;
+using Oxide.Core;
 using Oxide.Core.Extensions;
 
 namespace Oxide.Ext.GizmosExt
 {
+    [UsedImplicitly]
     public class GizmosExt : Extension
     {
         private static readonly VersionNumber s_ExtensionVersion = new(1, 0, 0);
