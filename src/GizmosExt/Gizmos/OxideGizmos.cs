@@ -70,15 +70,15 @@ namespace Oxide.Ext.GizmosExt
             SendCommandToPlayers(players, "ddraw.arrow", duration, color, from, to, headSize);
         }
 
-        public static void TopDownArrow(BasePlayer player, Vector3 pos, float yOffset, Color color, float duration, float height = 50, float headSize = 15)
+        public static void TopDownArrow(BasePlayer player, Vector3 pos, float yPos, Color color, float duration, float height = 50, float headSize = 15)
         {
-            TopDownArrow(new[] { player }, pos, yOffset, color, duration, height, headSize);
+            TopDownArrow(new[] { player }, pos, yPos, color, duration, height, headSize);
         }
 
-        public static void TopDownArrow(IEnumerable<BasePlayer> players, Vector3 pos, float yOffset, Color color, float duration,
+        public static void TopDownArrow(IEnumerable<BasePlayer> players, Vector3 pos, float yPos, Color color, float duration,
             float height = 50, float headSize = 15)
         {
-            Vector3 to = pos + new Vector3(0, yOffset, 0);
+            Vector3 to = new Vector3(pos.x, 0, pos.z) + new Vector3(0, yPos, 0);
             Vector3 from = to + new Vector3(0, height, 0);
             Arrow(players, from, to, headSize, color, duration);
         }
