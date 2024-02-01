@@ -78,7 +78,7 @@ namespace Oxide.Ext.GizmosExt
         public static void TopDownArrow(IEnumerable<BasePlayer> players, Vector3 pos, float yPos, Color color, float duration,
             float height = 50, float headSize = 15)
         {
-            Vector3 to = new Vector3(pos.x, 0, pos.z) + new Vector3(0, yPos, 0);
+            var to = new Vector3(pos.x, yPos, pos.z);
             Vector3 from = to + new Vector3(0, height, 0);
             Arrow(players, from, to, headSize, color, duration);
         }
