@@ -1,5 +1,3 @@
-# Clear the current directory (except the script itself)
-
 $resourcesDir = Join-Path -Path $PSScriptRoot -ChildPath "src/dependencies"
 
 # Create the directory if it doesn't exist
@@ -8,10 +6,14 @@ if (-not(Test-Path -Path $resourcesDir))
     New-Item -Path $resourcesDir -ItemType Directory
 }
 
-Get-ChildItem -Path $resourcesDir | Remove-Item -Force -Recurse
+# Clear output directory
+if (Test-Path -Path $resourcesDir)
+{
+    Get-ChildItem -Path $resourcesDir | Remove-Item -Force -Recurse
+}
 
 # Create a temporary folder
-$tmpDir = New-Item -ItemType Directory -Force -Path "$env:TEMP\Download-References"
+$tmpDir = New-Item -ItemType Directory -Force -Path "$env:TEMP\download-dependencies"
 
 # Temporary folders for DepotDownloader and Rust DLLs
 $depotDir = Join-Path -Path $tmpDir -ChildPath "DepotDownloader"
@@ -50,5 +52,18 @@ Move-Item -Path "$oxideDir\RustDedicated_Data\Managed\*.dll" -Destination $resou
 # Delete the temporary folder
 Remove-Item -Path $tmpDir -Force -Recurse
 
-# Display a completion message
-Write-Host "References downloaded and copied to $PSScriptRoot."
+# Delete dll breaking automated builds using git actions
+$filesToDelete = @(
+"Facepunch.Steamworks.Win64.dll",
+"UnityEngine.ARModule.dll",
+"UnityEngine.NVIDIAModule.dll"
+)
+
+foreach ($filename in $filesToDelete)
+{
+    $filePath = Join-Path -Path $resourcesDir -ChildPath $filename
+    if (Test-Path -Path $filePath)
+    {
+        Remove-Item -Path $filePath -Force
+    }
+}
