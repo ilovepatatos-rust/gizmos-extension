@@ -12,5 +12,6 @@ using Oxide.Ext.GizmosExt;
 
 // some code
 OxideGizmos.Sphere(player, pos, radius, Color.green, DURATION);
+OxideGizmos.Box(player, pos, rot, size, Color.green, DURATION);
 ```
 ![image](https://github.com/ilovepatatos-rust/gizmos-extension/assets/49655463/6736893e-b3f2-4115-8b81-f7b3aea31bd3)
