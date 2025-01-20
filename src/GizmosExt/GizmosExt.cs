@@ -7,7 +7,7 @@ namespace Oxide.Ext.GizmosExt;
 [UsedImplicitly]
 public class GizmosExt : Extension
 {
-    private static readonly VersionNumber s_extensionVersion = new(1, 0, 0);
+    private static readonly VersionNumber s_extensionVersion = new(2, 0, 0);
 
     public override string Name => "GizmosExt";
     public override string Author => "Ilovepatatos";
