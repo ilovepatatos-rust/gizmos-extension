@@ -16,7 +16,7 @@ public static class OxideGizmos
     {
         List<Connection> con = players.GetOnlineConnectionsPooled();
         SendCommandToPlayers(con, cmd, args);
-        Facepunch.Pool.FreeList(ref con);
+        Facepunch.Pool.FreeUnmanaged(ref con);
     }
 
     private static void SendCommandToPlayers(List<Connection> connections, string cmd, params object[] args)
@@ -127,6 +127,6 @@ public static class OxideGizmos
         Line(con, duration, color, corner04, corner04.RotateAround(new Vector3(corner04.x, corner04.y, corner04.z - size.z), rot));
         Line(con, duration, color, corner04, corner04.RotateAround(new Vector3(corner04.x, corner04.y + size.y, corner04.z), rot));
 
-        Facepunch.Pool.FreeList(ref con);
+        Facepunch.Pool.FreeUnmanaged(ref con);
     }
 }
