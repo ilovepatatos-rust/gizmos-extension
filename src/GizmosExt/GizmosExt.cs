@@ -16,5 +16,10 @@ namespace Oxide.Ext.GizmosExt
         public override bool SupportsReloading => true;
 
         public GizmosExt(ExtensionManager manager) : base(manager) { }
+
+        public override IEnumerable<string> GetPreprocessorDirectives()
+        {
+            yield return "GIZMOS_FRAMEWORK";
+        }
     }
 }
