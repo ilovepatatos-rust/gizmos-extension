@@ -28,6 +28,9 @@
       <Reference Include="Oxide.Core">
         <HintPath>..\dependencies\Oxide.Core.dll</HintPath>
       </Reference>
+      <Reference Include="Rust.Global">
+        <HintPath>..\dependencies\Rust.Global.dll</HintPath>
+      </Reference>
       <Reference Include="UnityEngine.CoreModule">
         <HintPath>..\dependencies\UnityEngine.CoreModule.dll</HintPath>
       </Reference>
