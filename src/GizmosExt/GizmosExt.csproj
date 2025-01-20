@@ -31,6 +31,9 @@
       <Reference Include="UnityEngine.CoreModule">
         <HintPath>..\dependencies\UnityEngine.CoreModule.dll</HintPath>
       </Reference>
+      <Reference Include="UnityEngine.PhysicsModule">
+        <HintPath>..\dependencies\UnityEngine.PhysicsModule.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
     <!-- make all references non-private, so they won't be copied to the output folder -->
