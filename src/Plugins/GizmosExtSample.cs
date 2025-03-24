@@ -17,8 +17,9 @@ namespace Oxide.Plugins
         [Command("gizmos.line")]
         private void Line(IPlayer iPlayer, string cmd, string[] args)
         {
-            BasePlayer player = iPlayer.Object as BasePlayer;
-            if (player == null) return;
+            var player = iPlayer.Object as BasePlayer;
+            if (player == null)
+                return;
 
             Vector3 from = player.eyes.position;
 
@@ -32,8 +33,9 @@ namespace Oxide.Plugins
         [Command("gizmos.box")]
         private void Box(IPlayer iPlayer, string cmd, string[] args)
         {
-            BasePlayer player = iPlayer.Object as BasePlayer;
-            if (player == null) return;
+            var player = iPlayer.Object as BasePlayer;
+            if (player == null)
+                return;
 
             Vector3 pos = player.transform.position;
             Quaternion rot = player.GetNetworkRotation();
@@ -46,8 +48,9 @@ namespace Oxide.Plugins
         [Command("gizmos.sphere")]
         private void Sphere(IPlayer iPlayer, string cmd, string[] args)
         {
-            BasePlayer player = iPlayer.Object as BasePlayer;
-            if (player == null) return;
+            var player = iPlayer.Object as BasePlayer;
+            if (player == null)
+                return;
 
             const float radius = 3f;
             Vector3 pos = player.transform.position;
@@ -59,8 +62,9 @@ namespace Oxide.Plugins
         [Command("gizmos.arrow")]
         private void Arrow(IPlayer iPlayer, string cmd, string[] args)
         {
-            BasePlayer player = iPlayer.Object as BasePlayer;
-            if (player == null) return;
+            var player = iPlayer.Object as BasePlayer;
+            if (player == null)
+                return;
 
             Vector3 from = player.eyes.position;
 
@@ -75,8 +79,9 @@ namespace Oxide.Plugins
         [Command("gizmos.text")]
         private void Text(IPlayer iPlayer, string cmd, string[] args)
         {
-            BasePlayer player = iPlayer.Object as BasePlayer;
-            if (player == null) return;
+            var player = iPlayer.Object as BasePlayer;
+            if (player == null)
+                return;
 
             const string text = "<size=20>Hello World!</size>";
             Vector3 pos = player.eyes.position;
