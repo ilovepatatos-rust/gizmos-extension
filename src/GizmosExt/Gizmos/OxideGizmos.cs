@@ -12,121 +12,184 @@ public static class OxideGizmos
     /// </summary>
     public static readonly List<IGizmosDrawer> AllGizmos = new();
 
-    private static void SendCommandToPlayers(IEnumerable<BasePlayer> players, string cmd, params object[] args)
+    /// <summary>
+    /// Render a line from point A to point B.
+    /// </summary>
+    public static void Line([NotNull] BasePlayer player, float duration, Color color, Vector3 from, Vector3 to,
+        float visibleDistance = float.PositiveInfinity, bool zTest = true)
     {
-        List<Connection> con = players.GetOnlineConnectionsPooled();
-        SendCommandToPlayers(con, cmd, args);
-        Facepunch.Pool.FreeUnmanaged(ref con);
+        if (player != null)
+            player.SendAdminCommand("ddraw.line", duration, color, from, to, visibleDistance, zTest);
     }
 
-    private static void SendCommandToPlayers(List<Connection> connections, string cmd, params object[] args)
+    public static void Line([NotNull] IEnumerable<BasePlayer> players, float duration, Color color, Vector3 from, Vector3 to,
+        float visibleDistance = float.PositiveInfinity, bool zTest = true)
     {
-        if (connections.Count > 0)
-            ConsoleNetwork.SendClientCommand(connections, cmd, args);
+        if (players == null)
+            throw new ArgumentNullException(nameof(players));
+
+        foreach (BasePlayer player in players)
+            Line(player, duration, color, from, to, visibleDistance, zTest);
     }
 
-    public static void Line(BasePlayer player, float duration, Color color, Vector3 from, Vector3 to)
+    public static void Line([NotNull] List<Connection> connections, float duration, Color color, Vector3 from, Vector3 to,
+        float visibleDistance = float.PositiveInfinity, bool zTest = true)
     {
-        Line(new[] { player }, duration, color, from, to);
+        if (connections == null)
+            throw new ArgumentNullException(nameof(connections));
+
+        IEnumerable<BasePlayer> players = connections.Select(x => x.player as BasePlayer);
+        Line(players, duration, color, from, to, visibleDistance, zTest);
     }
 
-    public static void Line(IEnumerable<BasePlayer> players, float duration, Color color, Vector3 from, Vector3 to)
+    /// <summary>
+    /// Render a sphere at a given position.
+    /// </summary>
+    public static void Sphere([NotNull] BasePlayer player, Vector3 pos, float radius, Color color, float duration,
+        float visibleDistance = float.PositiveInfinity)
     {
-        SendCommandToPlayers(players, "ddraw.line", duration, color, from, to);
+        if (player != null)
+            player.SendAdminCommand("ddraw.sphere", duration, color, pos, radius, visibleDistance);
     }
 
-    public static void Line(List<Connection> connections, float duration, Color color, Vector3 from, Vector3 to)
+    public static void Sphere([NotNull] IEnumerable<BasePlayer> players, Vector3 pos, float radius, Color color, float duration,
+        float visibleDistance = float.PositiveInfinity)
     {
-        SendCommandToPlayers(connections, "ddraw.line", duration, color, from, to);
+        if (players == null)
+            throw new ArgumentNullException(nameof(players));
+
+        foreach (BasePlayer player in players)
+            Sphere(player, pos, radius, color, duration, visibleDistance);
     }
 
-    public static void Box(BasePlayer player, Vector3 pos, float size, Color color, float duration)
+    public static void Sphere([NotNull] List<Connection> connections, Vector3 pos, float radius, Color color, float duration,
+        float visibleDistance = float.PositiveInfinity)
     {
-        Box(new[] { player }, pos, size, color, duration);
+        if (connections == null)
+            throw new ArgumentNullException(nameof(connections));
+
+        IEnumerable<BasePlayer> players = connections.Select(x => x.player as BasePlayer);
+        Sphere(players, pos, radius, color, duration, visibleDistance);
     }
 
-    public static void Box(IEnumerable<BasePlayer> players, Vector3 pos, float size, Color color, float duration)
+    /// <summary>
+    /// Render a box using lines at a given position/rotation.
+    /// </summary>
+    public static void Box([NotNull] BasePlayer player, Vector3 pos, Quaternion rot, Vector3 size, Color color, float duration,
+        float visibleDistance = float.PositiveInfinity, bool zTest = true)
     {
-        SendCommandToPlayers(players, "ddraw.box", duration, color, pos, size);
+        if (player != null)
+            player.SendAdminCommand("ddraw.box", duration, color, pos, size, rot.eulerAngles, visibleDistance, zTest);
     }
 
-    public static void Sphere(BasePlayer player, Vector3 pos, float radius, Color color, float duration)
+    public static void Box(IEnumerable<BasePlayer> players, Vector3 pos, Quaternion rot, Vector3 size, Color color, float duration,
+        float visibleDistance = float.PositiveInfinity, bool zTest = true)
     {
-        Sphere(new[] { player }, pos, radius, color, duration);
+        if (players == null)
+            throw new ArgumentNullException(nameof(players));
+
+        foreach (BasePlayer player in players)
+            Box(player, pos, rot, size, color, duration, visibleDistance, zTest);
     }
 
-    public static void Sphere(IEnumerable<BasePlayer> players, Vector3 pos, float radius, Color color, float duration)
+    public static void Box([NotNull] List<Connection> connections, Vector3 pos, Quaternion rot, Vector3 size, Color color, float duration,
+        float visibleDistance = float.PositiveInfinity, bool zTest = true)
     {
-        SendCommandToPlayers(players, "ddraw.sphere", duration, color, pos, radius);
+        if (connections == null)
+            throw new ArgumentNullException(nameof(connections));
+
+        IEnumerable<BasePlayer> players = connections.Select(x => x.player as BasePlayer);
+        Box(players, pos, rot, size, color, duration, visibleDistance, zTest);
     }
 
-    public static void Arrow(BasePlayer player, Vector3 from, Vector3 to, float headSize, Color color, float duration)
+    /// <summary>
+    /// Render an arrow from point A to point B.
+    /// </summary>
+    public static void Arrow(BasePlayer player, Vector3 from, Vector3 to, float headSize, Color color, float duration,
+        float visibleDistance = float.PositiveInfinity)
     {
-        Arrow(new[] { player }, from, to, headSize, color, duration);
+        if (player != null)
+            player.SendAdminCommand("ddraw.arrow", duration, color, from, to, headSize, visibleDistance);
     }
 
-    public static void Arrow(IEnumerable<BasePlayer> players, Vector3 from, Vector3 to, float headSize, Color color, float duration)
+    public static void Arrow([NotNull] IEnumerable<BasePlayer> players, Vector3 from, Vector3 to, float headSize, Color color, float duration,
+        float visibleDistance = float.PositiveInfinity)
     {
-        SendCommandToPlayers(players, "ddraw.arrow", duration, color, from, to, headSize);
+        if (players == null)
+            throw new ArgumentNullException(nameof(players));
+
+        foreach (BasePlayer player in players)
+            Arrow(player, from, to, headSize, color, duration, visibleDistance);
     }
 
-    public static void TopDownArrow(BasePlayer player, Vector3 pos, float yPos, Color color, float duration, float height = 50, float headSize = 15)
+    public static void Arrow([NotNull] List<Connection> connections, Vector3 from, Vector3 to, float headSize, Color color, float duration,
+        float visibleDistance = float.PositiveInfinity)
     {
-        TopDownArrow(new[] { player }, pos, yPos, color, duration, height, headSize);
+        if (connections == null)
+            throw new ArgumentNullException(nameof(connections));
+
+        IEnumerable<BasePlayer> players = connections.Select(x => x.player as BasePlayer);
+        Arrow(players, from, to, headSize, color, duration, visibleDistance);
     }
 
-    public static void TopDownArrow(IEnumerable<BasePlayer> players, Vector3 pos, float yPos, Color color, float duration,
-        float height = 50, float headSize = 15)
+    /// <summary>
+    /// Render a top-down arrow at a given position.
+    /// </summary>
+    public static void TopDownArrow(BasePlayer player, Vector3 pos, float yPos, Color color, float duration,
+        float height = 50, float headSize = 15, float visibleDistance = float.PositiveInfinity)
     {
         var to = new Vector3(pos.x, yPos, pos.z);
         Vector3 from = to + new Vector3(0, height, 0);
-        Arrow(players, from, to, headSize, color, duration);
+
+        Arrow(player, from, to, headSize, color, duration, visibleDistance);
     }
 
-    public static void Text(BasePlayer player, Vector3 pos, string text, Color color, float duration)
+    public static void TopDownArrow(IEnumerable<BasePlayer> players, Vector3 pos, float yPos, Color color, float duration,
+        float height = 50, float headSize = 15, float visibleDistance = float.PositiveInfinity)
     {
-        Text(new[] { player }, pos, text, color, duration);
+        var to = new Vector3(pos.x, yPos, pos.z);
+        Vector3 from = to + new Vector3(0, height, 0);
+
+        Arrow(players, from, to, headSize, color, duration, visibleDistance);
     }
 
-    public static void Text(IEnumerable<BasePlayer> players, Vector3 pos, string text, Color color, float duration)
+    public static void TopDownArrow([NotNull] List<Connection> connections, Vector3 pos, float yPos, Color color, float duration,
+        float height = 50, float headSize = 15, float visibleDistance = float.PositiveInfinity)
     {
-        SendCommandToPlayers(players, "ddraw.text", duration, color, pos, text);
+        if (connections == null)
+            throw new ArgumentNullException(nameof(connections));
+
+        IEnumerable<BasePlayer> players = connections.Select(x => x.player as BasePlayer);
+        TopDownArrow(players, pos, yPos, color, duration, height, headSize, visibleDistance);
     }
 
-    public static void Box(BasePlayer player, Vector3 pos, Quaternion rot, Vector3 size, Color color, float duration)
+    /// <summary>
+    /// Render a text at a given position.
+    /// </summary>
+    public static void Text(BasePlayer player, Vector3 pos, string text, Color color, float duration,
+        float visibleDistance = float.PositiveInfinity)
     {
-        Box(new[] { player }, pos, rot, size, color, duration);
+        if (player != null)
+            player.SendAdminCommand("ddraw.text", duration, color, pos, text, visibleDistance);
     }
 
-    public static void Box(IEnumerable<BasePlayer> players, Vector3 pos, Quaternion rot, Vector3 size, Color color, float duration)
+    public static void Text(IEnumerable<BasePlayer> players, Vector3 pos, string text, Color color, float duration,
+        float visibleDistance = float.PositiveInfinity)
     {
-        List<Connection> con = players.GetOnlineConnectionsPooled();
+        if (players == null)
+            throw new ArgumentNullException(nameof(players));
 
-        float halfWidth = size.x / 2f;
-        float halfHeight = size.y / 2f;
-        float halfDepth = size.z / 2f;
+        foreach (BasePlayer player in players)
+            Text(player, pos, text, color, duration, visibleDistance);
+    }
 
-        //TODO Can be optimize by calculating 8 points instead of 16
-        Vector3 corner01 = pos.RotateAround(new Vector3(pos.x - halfWidth, pos.y + halfHeight, pos.z - halfDepth), rot);
-        Line(con, duration, color, corner01, corner01.RotateAround(new Vector3(corner01.x + size.x, corner01.y, corner01.z), rot));
-        Line(con, duration, color, corner01, corner01.RotateAround(new Vector3(corner01.x, corner01.y, corner01.z + size.z), rot));
-        Line(con, duration, color, corner01, corner01.RotateAround(new Vector3(corner01.x, corner01.y - size.y, corner01.z), rot));
+    public static void Text([NotNull] List<Connection> connections, Vector3 pos, string text, Color color, float duration,
+        float visibleDistance = float.PositiveInfinity)
+    {
+        if (connections == null)
+            throw new ArgumentNullException(nameof(connections));
 
-        Vector3 corner02 = pos.RotateAround(new Vector3(pos.x + halfWidth, pos.y + halfHeight, pos.z + halfDepth), rot);
-        Line(con, duration, color, corner02, corner02.RotateAround(new Vector3(corner02.x - size.x, corner02.y, corner02.z), rot));
-        Line(con, duration, color, corner02, corner02.RotateAround(new Vector3(corner02.x, corner02.y, corner02.z - size.z), rot));
-        Line(con, duration, color, corner02, corner02.RotateAround(new Vector3(corner02.x, corner02.y - size.y, corner02.z), rot));
-
-        Vector3 corner03 = pos.RotateAround(new Vector3(pos.x + halfWidth, pos.y - halfHeight, pos.z - halfDepth), rot);
-        Line(con, duration, color, corner03, corner03.RotateAround(new Vector3(corner03.x - size.x, corner03.y, corner03.z), rot));
-        Line(con, duration, color, corner03, corner03.RotateAround(new Vector3(corner03.x, corner03.y, corner03.z + size.z), rot));
-        Line(con, duration, color, corner03, corner03.RotateAround(new Vector3(corner03.x, corner03.y + size.y, corner03.z), rot));
-
-        Vector3 corner04 = pos.RotateAround(new Vector3(pos.x - halfWidth, pos.y - halfHeight, pos.z + halfDepth), rot);
-        Line(con, duration, color, corner04, corner04.RotateAround(new Vector3(corner04.x + size.x, corner04.y, corner04.z), rot));
-        Line(con, duration, color, corner04, corner04.RotateAround(new Vector3(corner04.x, corner04.y, corner04.z - size.z), rot));
-        Line(con, duration, color, corner04, corner04.RotateAround(new Vector3(corner04.x, corner04.y + size.y, corner04.z), rot));
-
-        Facepunch.Pool.FreeUnmanaged(ref con);
+        IEnumerable<BasePlayer> players = connections.Select(x => x.player as BasePlayer);
+        Text(players, pos, text, color, duration, visibleDistance);
     }
 }
