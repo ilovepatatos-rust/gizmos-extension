@@ -169,6 +169,9 @@
       <Reference Include="Oxide.CSharp">
         <HintPath>..\dependencies\Oxide.CSharp.dll</HintPath>
       </Reference>
+      <Reference Include="Oxide.Ext.IlovepatatosExt">
+        <HintPath>..\dependencies\Oxide.Ext.IlovepatatosExt.dll</HintPath>
+      </Reference>
       <Reference Include="Oxide.MySql">
         <HintPath>..\dependencies\Oxide.MySql.dll</HintPath>
       </Reference>
