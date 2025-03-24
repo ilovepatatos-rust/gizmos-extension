@@ -15,7 +15,7 @@ public static class OxideGizmos
     /// <summary>
     /// Render a line from point A to point B.
     /// </summary>
-    public static void Line([NotNull] BasePlayer player, float duration, Color color, Vector3 from, Vector3 to,
+    public static void Line(BasePlayer player, float duration, Color color, Vector3 from, Vector3 to,
         float visibleDistance = float.PositiveInfinity, bool zTest = true)
     {
         if (player != null)
@@ -45,7 +45,7 @@ public static class OxideGizmos
     /// <summary>
     /// Render a sphere at a given position.
     /// </summary>
-    public static void Sphere([NotNull] BasePlayer player, Vector3 pos, float radius, Color color, float duration,
+    public static void Sphere(BasePlayer player, Vector3 pos, float radius, Color color, float duration,
         float visibleDistance = float.PositiveInfinity)
     {
         if (player != null)
@@ -75,21 +75,100 @@ public static class OxideGizmos
     /// <summary>
     /// Render a box using lines at a given position/rotation.
     /// </summary>
-    public static void Box([NotNull] BasePlayer player, Vector3 pos, Quaternion rot, Vector3 size, Color color, float duration,
+    public static void Box(BasePlayer player, Vector3 pos, Quaternion rot, Vector3 size, Color color, float duration,
         float visibleDistance = float.PositiveInfinity, bool zTest = true)
     {
-        if (player != null)
-            player.SendAdminCommand("ddraw.box", duration, color, pos, size, rot.eulerAngles, visibleDistance, zTest);
+        if (player == null)
+            return;
+
+        Connection connection = player.Connection;
+        if (connection == null)
+            return;
+
+        bool wasAdmin = player.ValidateIsAdmin();
+
+        const string command = "ddraw.line";
+        float halfWidth = size.x / 2f;
+        float halfHeight = size.y / 2f;
+        float halfDepth = size.z / 2f;
+
+        // Calculate the 8 corners of the box
+        var corners = new Vector3[8];
+        corners[0] = pos.RotateAround(new Vector3(pos.x - halfWidth, pos.y + halfHeight, pos.z - halfDepth), rot);
+        corners[1] = pos.RotateAround(new Vector3(pos.x + halfWidth, pos.y + halfHeight, pos.z - halfDepth), rot);
+        corners[2] = pos.RotateAround(new Vector3(pos.x + halfWidth, pos.y + halfHeight, pos.z + halfDepth), rot);
+        corners[3] = pos.RotateAround(new Vector3(pos.x - halfWidth, pos.y + halfHeight, pos.z + halfDepth), rot);
+        corners[4] = pos.RotateAround(new Vector3(pos.x - halfWidth, pos.y - halfHeight, pos.z - halfDepth), rot);
+        corners[5] = pos.RotateAround(new Vector3(pos.x + halfWidth, pos.y - halfHeight, pos.z - halfDepth), rot);
+        corners[6] = pos.RotateAround(new Vector3(pos.x + halfWidth, pos.y - halfHeight, pos.z + halfDepth), rot);
+        corners[7] = pos.RotateAround(new Vector3(pos.x - halfWidth, pos.y - halfHeight, pos.z + halfDepth), rot);
+
+        // Draw the 12 edges of the box
+        ConsoleNetwork.SendClientCommand(connection, command, duration, color, corners[0], corners[1], visibleDistance, zTest);
+        ConsoleNetwork.SendClientCommand(connection, command, duration, color, corners[1], corners[2], visibleDistance, zTest);
+        ConsoleNetwork.SendClientCommand(connection, command, duration, color, corners[2], corners[3], visibleDistance, zTest);
+        ConsoleNetwork.SendClientCommand(connection, command, duration, color, corners[3], corners[0], visibleDistance, zTest);
+        ConsoleNetwork.SendClientCommand(connection, command, duration, color, corners[4], corners[5], visibleDistance, zTest);
+        ConsoleNetwork.SendClientCommand(connection, command, duration, color, corners[5], corners[6], visibleDistance, zTest);
+        ConsoleNetwork.SendClientCommand(connection, command, duration, color, corners[6], corners[7], visibleDistance, zTest);
+        ConsoleNetwork.SendClientCommand(connection, command, duration, color, corners[7], corners[4], visibleDistance, zTest);
+        ConsoleNetwork.SendClientCommand(connection, command, duration, color, corners[0], corners[4], visibleDistance, zTest);
+        ConsoleNetwork.SendClientCommand(connection, command, duration, color, corners[1], corners[5], visibleDistance, zTest);
+        ConsoleNetwork.SendClientCommand(connection, command, duration, color, corners[2], corners[6], visibleDistance, zTest);
+        ConsoleNetwork.SendClientCommand(connection, command, duration, color, corners[3], corners[7], visibleDistance, zTest);
+
+        player.RevertAdminState(wasAdmin);
     }
 
-    public static void Box(IEnumerable<BasePlayer> players, Vector3 pos, Quaternion rot, Vector3 size, Color color, float duration,
+    public static void Box([NotNull] IEnumerable<BasePlayer> players, Vector3 pos, Quaternion rot, Vector3 size, Color color, float duration,
         float visibleDistance = float.PositiveInfinity, bool zTest = true)
     {
         if (players == null)
             throw new ArgumentNullException(nameof(players));
 
+        const string command = "ddraw.line";
+        float halfWidth = size.x / 2f;
+        float halfHeight = size.y / 2f;
+        float halfDepth = size.z / 2f;
+
+        // Calculate the 8 corners of the box
+        var corners = new Vector3[8];
+        corners[0] = pos.RotateAround(new Vector3(pos.x - halfWidth, pos.y + halfHeight, pos.z - halfDepth), rot);
+        corners[1] = pos.RotateAround(new Vector3(pos.x + halfWidth, pos.y + halfHeight, pos.z - halfDepth), rot);
+        corners[2] = pos.RotateAround(new Vector3(pos.x + halfWidth, pos.y + halfHeight, pos.z + halfDepth), rot);
+        corners[3] = pos.RotateAround(new Vector3(pos.x - halfWidth, pos.y + halfHeight, pos.z + halfDepth), rot);
+        corners[4] = pos.RotateAround(new Vector3(pos.x - halfWidth, pos.y - halfHeight, pos.z - halfDepth), rot);
+        corners[5] = pos.RotateAround(new Vector3(pos.x + halfWidth, pos.y - halfHeight, pos.z - halfDepth), rot);
+        corners[6] = pos.RotateAround(new Vector3(pos.x + halfWidth, pos.y - halfHeight, pos.z + halfDepth), rot);
+        corners[7] = pos.RotateAround(new Vector3(pos.x - halfWidth, pos.y - halfHeight, pos.z + halfDepth), rot);
+
         foreach (BasePlayer player in players)
-            Box(player, pos, rot, size, color, duration, visibleDistance, zTest);
+        {
+            if (player == null)
+                continue;
+
+            Connection connection = player.Connection;
+            if (connection == null)
+                continue;
+
+            bool wasAdmin = player.ValidateIsAdmin();
+
+            // Draw the 12 edges of the box
+            ConsoleNetwork.SendClientCommand(connection, command, duration, color, corners[0], corners[1], visibleDistance, zTest);
+            ConsoleNetwork.SendClientCommand(connection, command, duration, color, corners[1], corners[2], visibleDistance, zTest);
+            ConsoleNetwork.SendClientCommand(connection, command, duration, color, corners[2], corners[3], visibleDistance, zTest);
+            ConsoleNetwork.SendClientCommand(connection, command, duration, color, corners[3], corners[0], visibleDistance, zTest);
+            ConsoleNetwork.SendClientCommand(connection, command, duration, color, corners[4], corners[5], visibleDistance, zTest);
+            ConsoleNetwork.SendClientCommand(connection, command, duration, color, corners[5], corners[6], visibleDistance, zTest);
+            ConsoleNetwork.SendClientCommand(connection, command, duration, color, corners[6], corners[7], visibleDistance, zTest);
+            ConsoleNetwork.SendClientCommand(connection, command, duration, color, corners[7], corners[4], visibleDistance, zTest);
+            ConsoleNetwork.SendClientCommand(connection, command, duration, color, corners[0], corners[4], visibleDistance, zTest);
+            ConsoleNetwork.SendClientCommand(connection, command, duration, color, corners[1], corners[5], visibleDistance, zTest);
+            ConsoleNetwork.SendClientCommand(connection, command, duration, color, corners[2], corners[6], visibleDistance, zTest);
+            ConsoleNetwork.SendClientCommand(connection, command, duration, color, corners[3], corners[7], visibleDistance, zTest);
+
+            player.RevertAdminState(wasAdmin);
+        }
     }
 
     public static void Box([NotNull] List<Connection> connections, Vector3 pos, Quaternion rot, Vector3 size, Color color, float duration,
@@ -144,9 +223,12 @@ public static class OxideGizmos
         Arrow(player, from, to, headSize, color, duration, visibleDistance);
     }
 
-    public static void TopDownArrow(IEnumerable<BasePlayer> players, Vector3 pos, float yPos, Color color, float duration,
+    public static void TopDownArrow([NotNull] IEnumerable<BasePlayer> players, Vector3 pos, float yPos, Color color, float duration,
         float height = 50, float headSize = 15, float visibleDistance = float.PositiveInfinity)
     {
+        if (players == null)
+            throw new ArgumentNullException(nameof(players));
+
         var to = new Vector3(pos.x, yPos, pos.z);
         Vector3 from = to + new Vector3(0, height, 0);
 
@@ -173,7 +255,7 @@ public static class OxideGizmos
             player.SendAdminCommand("ddraw.text", duration, color, pos, text, visibleDistance);
     }
 
-    public static void Text(IEnumerable<BasePlayer> players, Vector3 pos, string text, Color color, float duration,
+    public static void Text([NotNull] IEnumerable<BasePlayer> players, Vector3 pos, string text, Color color, float duration,
         float visibleDistance = float.PositiveInfinity)
     {
         if (players == null)

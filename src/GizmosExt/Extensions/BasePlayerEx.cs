@@ -18,7 +18,7 @@ internal static class BasePlayerEx
     /// <returns>
     /// Whether the player was an admin or not.
     /// </returns>
-    private static bool ValidateIsAdmin(this BasePlayer player)
+    internal static bool ValidateIsAdmin(this BasePlayer player)
     {
         if (player.IsAdmin)
             return true;
@@ -31,7 +31,7 @@ internal static class BasePlayerEx
         return false;
     }
 
-    private static void RevertAdminState(this BasePlayer player, bool wasAdmin)
+    internal static void RevertAdminState(this BasePlayer player, bool wasAdmin)
     {
         if (wasAdmin)
             return;
