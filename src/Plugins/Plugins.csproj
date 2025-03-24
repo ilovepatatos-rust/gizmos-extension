@@ -169,9 +169,6 @@
       <Reference Include="Oxide.CSharp">
         <HintPath>..\dependencies\Oxide.CSharp.dll</HintPath>
       </Reference>
-      <Reference Include="Oxide.Ext.GizmosExt">
-        <HintPath>..\GizmosExt\bin\Release\net48\Oxide.Ext.GizmosExt.dll</HintPath>
-      </Reference>
       <Reference Include="Oxide.MySql">
         <HintPath>..\dependencies\Oxide.MySql.dll</HintPath>
       </Reference>
@@ -526,6 +523,10 @@
       <Reference Include="UnityEngine.XRModule">
         <HintPath>..\dependencies\UnityEngine.XRModule.dll</HintPath>
       </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\GizmosExt\GizmosExt.csproj" />
     </ItemGroup>
 
 </Project>
