@@ -4,16 +4,18 @@ using UnityEngine;
 
 namespace Oxide.Ext.GizmosExt;
 
+/// <summary>
+/// Render an arrow from point A to point B.
+/// </summary>
 public static partial class OxideGizmos
 {
-    /// <summary>
-    /// Render an arrow from point A to point B.
-    /// </summary>
+    private const string COMMAND_ARROW = "ddraw.arrow";
+
     public static void Arrow(BasePlayer player, Vector3 from, Vector3 to, float headSize, Color color, float duration,
         float visibleDistance = float.PositiveInfinity)
     {
         if (player != null)
-            player.SendAdminCommand("ddraw.arrow", duration, color, from, to, headSize, visibleDistance);
+            player.SendAdminCommand(COMMAND_ARROW, duration, color, from, to, headSize, visibleDistance);
     }
 
     public static void Arrow([NotNull] IEnumerable<BasePlayer> players, Vector3 from, Vector3 to, float headSize, Color color, float duration,
@@ -48,6 +50,9 @@ public static partial class OxideGizmos
         Arrow(player, from, to, headSize, color, duration, visibleDistance);
     }
 
+    /// <summary>
+    /// Render a top-down arrow at a given position.
+    /// </summary>
     public static void TopDownArrow([NotNull] IEnumerable<BasePlayer> players, Vector3 pos, float yPos, Color color, float duration,
         float height = 50, float headSize = 15, float visibleDistance = float.PositiveInfinity)
     {
@@ -60,6 +65,9 @@ public static partial class OxideGizmos
         Arrow(players, from, to, headSize, color, duration, visibleDistance);
     }
 
+    /// <summary>
+    /// Render a top-down arrow at a given position.
+    /// </summary>
     public static void TopDownArrow([NotNull] List<Connection> connections, Vector3 pos, float yPos, Color color, float duration,
         float height = 50, float headSize = 15, float visibleDistance = float.PositiveInfinity)
     {

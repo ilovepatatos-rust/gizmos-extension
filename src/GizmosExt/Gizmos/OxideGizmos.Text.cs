@@ -4,16 +4,18 @@ using UnityEngine;
 
 namespace Oxide.Ext.GizmosExt;
 
+/// <summary>
+/// Render a text at a given position.
+/// </summary>
 public static partial class OxideGizmos
 {
-    /// <summary>
-    /// Render a text at a given position.
-    /// </summary>
+    private const string COMMAND_TEXT = "ddraw.text";
+
     public static void Text(BasePlayer player, Vector3 pos, string text, Color color, float duration,
         float visibleDistance = float.PositiveInfinity)
     {
         if (player != null)
-            player.SendAdminCommand("ddraw.text", duration, color, pos, text, visibleDistance);
+            player.SendAdminCommand(COMMAND_TEXT, duration, color, pos, text, visibleDistance);
     }
 
     public static void Text([NotNull] IEnumerable<BasePlayer> players, Vector3 pos, string text, Color color, float duration,
