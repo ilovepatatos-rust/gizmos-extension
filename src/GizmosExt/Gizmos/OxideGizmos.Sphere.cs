@@ -15,14 +15,14 @@ public static partial class OxideGizmos
         float visibleDistance = float.PositiveInfinity)
     {
         if (player != null)
-            player.SendAdminCommand(COMMAND_LINE, duration, color, pos, radius, visibleDistance);
+            player.SendAdminCommand(COMMAND_SPHERE, duration, color, pos, radius, visibleDistance);
     }
 
     public static void Sphere(BasePlayer player, Vector3 pos, float radius, Vector3 color, float duration,
         float visibleDistance = float.PositiveInfinity)
     {
         if (player != null)
-            player.SendAdminCommand(COMMAND_LINE, duration, color, pos, radius, visibleDistance);
+            player.SendAdminCommand(COMMAND_SPHERE, duration, color, pos, radius, visibleDistance);
     }
 
     public static void Sphere([NotNull] IEnumerable<BasePlayer> players, Vector3 pos, float radius, Color color, float duration,
