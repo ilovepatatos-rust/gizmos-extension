@@ -16,6 +16,9 @@ public static class ColliderEx
             case BoxCollider box:
                 box.DrawGizmos(player, duration, color);
                 break;
+            case CapsuleCollider capsule:
+                capsule.DrawGizmos(player, duration, color);
+                break;
             case MeshCollider mesh:
                 mesh.DrawGizmos(player, duration, color);
                 break;
@@ -31,6 +34,9 @@ public static class ColliderEx
                 break;
             case BoxCollider box:
                 box.DrawGizmos(players, duration, color);
+                break;
+            case CapsuleCollider capsule:
+                capsule.DrawGizmos(players, duration, color);
                 break;
             case MeshCollider mesh:
                 mesh.DrawGizmos(players, duration, color);
