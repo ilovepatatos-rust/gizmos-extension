@@ -11,21 +11,21 @@ public static partial class OxideGizmos
 {
     private const string COMMAND_CAPSULE = "ddraw.capsule";
 
-    public static void Capsule(BasePlayer player, Vector3 pos, Quaternion rot, float radius, float height, Color color, float duration,
+    public static void Capsule(BasePlayer player, Vector3 pos, Vector3 rot, float radius, float height, Color color, float duration,
         float visibleDistance = float.PositiveInfinity)
     {
         if (player != null)
             player.SendAdminCommand(COMMAND_CAPSULE, duration, color, pos, rot, radius, height, visibleDistance);
     }
 
-    public static void Capsule(BasePlayer player, Vector3 pos, Quaternion rot, float radius, float height, Vector3 color, float duration,
+    public static void Capsule(BasePlayer player, Vector3 pos, Vector3 rot, float radius, float height, Vector3 color, float duration,
         float visibleDistance = float.PositiveInfinity)
     {
         if (player != null)
             player.SendAdminCommand(COMMAND_CAPSULE, duration, color, pos, rot, radius, height, visibleDistance);
     }
 
-    public static void Capsule([NotNull] IEnumerable<BasePlayer> players, Vector3 pos, Quaternion rot, float radius, float height, Color color, float duration,
+    public static void Capsule([NotNull] IEnumerable<BasePlayer> players, Vector3 pos, Vector3 rot, float radius, float height, Color color, float duration,
         float visibleDistance = float.PositiveInfinity)
     {
         if (players == null)
@@ -35,7 +35,7 @@ public static partial class OxideGizmos
             Capsule(player, pos, rot, radius, height, color, duration, visibleDistance);
     }
 
-    public static void Capsule([NotNull] IEnumerable<BasePlayer> players, Vector3 pos, Quaternion rot, float radius, float height, Vector3 color,
+    public static void Capsule([NotNull] IEnumerable<BasePlayer> players, Vector3 pos, Vector3 rot, float radius, float height, Vector3 color,
         float duration,
         float visibleDistance = float.PositiveInfinity)
     {
@@ -46,7 +46,7 @@ public static partial class OxideGizmos
             Capsule(player, pos, rot, radius, height, color, duration, visibleDistance);
     }
 
-    public static void Capsule([NotNull] List<Connection> connections, Vector3 pos, Quaternion rot, float radius, float height, Color color, float duration,
+    public static void Capsule([NotNull] List<Connection> connections, Vector3 pos, Vector3 rot, float radius, float height, Color color, float duration,
         float visibleDistance = float.PositiveInfinity)
     {
         if (connections == null)
@@ -56,7 +56,7 @@ public static partial class OxideGizmos
         Capsule(players, pos, rot, radius, height, color, duration, visibleDistance);
     }
 
-    public static void Capsule([NotNull] List<Connection> connections, Vector3 pos, Quaternion rot, float radius, float height, Vector3 color, float duration,
+    public static void Capsule([NotNull] List<Connection> connections, Vector3 pos, Vector3 rot, float radius, float height, Vector3 color, float duration,
         float visibleDistance = float.PositiveInfinity)
     {
         if (connections == null)
